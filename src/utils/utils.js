@@ -38,9 +38,45 @@ function getIndicatorCalc(value){
         data:value,
     })
 }
+// 修改指标值提交
+function updataIndexValue(value){
+    debugger
+    return Axios({
+        method:'post',
+        url:'http://127.0.0.1:6060/indicator/calcMdComposite',
+        data:value,
+    })
+}
+// 获取计算过程数据
+function getProcessResult(){
+  return Axios({
+    method:'get',
+    url:'http://127.0.0.1:6060/indicator/getProcessResult'
+  })
+}
+// 获取原始数据集
+function getOriginDataList(){
+  //debugger
+  return Axios({
+    method:'get',
+    url:'http://127.0.0.1:6060/indicator/getOriginDataList'
+  })
+}
+// 数据重置
+function resetData(){
+  //debugger
+  return Axios({
+    method:'get',
+    url:'http://127.0.0.1:6060/indicator/resetData'
+  })
+}
 export default{
     getCountryDate,
     getAlgorithmsAllDate,
     getZsptDate,
     getIndicatorCalc,
+    updataIndexValue,
+    getProcessResult,
+    getOriginDataList,
+    resetData
 }
