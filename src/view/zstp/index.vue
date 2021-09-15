@@ -199,13 +199,14 @@ export default {
                 formatter(v) {
                   let text = v.name;
                   //判断是否是数值
-                  if (v.name.length) {
-                    return text.length < 6
-                      ? text
-                      : `${text.slice(0, 7) + "..."}`;
-                  } else {
-                    return text;
-                  }
+                  // if (v.name.length) {
+                  //   return text.length < 6
+                  //     ? text
+                  //     : `${text.slice(0, 7) + "..."}`;
+                  // } else {
+                  //   return text;
+                  // }
+                  return text;
                 },
                 textStyle: {},
               },

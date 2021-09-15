@@ -2,14 +2,19 @@
   <div>
     <div class="header">
       <!--左侧菜单展开关闭控制图标-->
-      <div class="headerFold"><i class="el-icon-s-fold"></i></div>
+      <div class="headerFold">
+         <i class="el-icon-menu"></i>
+        <span style="color: #fff">指数构建</span>
+        <!-- <i class="el-icon-s-fold"></i> -->
+        </div>
       <!--最右侧用户信息包退出操作-->
       <div class="headerRight">
         <el-dropdown>
           <span class="el-dropdown-link">
             {{
               this.$route.query.username
-            }}<i class="el-icon-arrow-down el-icon--right"></i>
+            }}
+            <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item><span @click="back">退出</span></el-dropdown-item>
@@ -17,19 +22,18 @@
         </el-dropdown>
       </div>
     </div>
-    <div class="navbar">
-      <!--左侧菜单知识图谱logo-->
+    <!-- <div class="navbar">
       <div class="zstpRightMenu">
         <i class="el-icon-menu"></i>
         <span style="color: #009cff">知识图谱</span>
       </div>
-    </div>
+    </div> -->
     <div class="main">
       <div class="mainLeft">
         <div>
           <el-card class="mainLeft">
             <div slot="header" class="clearfix">
-              <span>选择配置项</span>
+              <span>选择算法</span>
             </div>
             <div>
               <el-form>
@@ -108,7 +112,7 @@
                 </el-form-item>
                 <el-form-item class="buttonBtm">
                   <el-button type="primary" @click="submitIndicatorCalc"
-                  >立即创建
+                  >指数计算
                   </el-button
                   >
                   <el-button @click="resetForm()">取消</el-button>
@@ -666,7 +670,7 @@ export default {
   right: 0px;
   //   background-color: #2d3a4b;
   border-bottom: solid 1px #e6e6e6;
-  margin-left: 180px;
+  background: #203d0afa;
   height: 50px;
   //   margin-block-start: 1em;
   // margin-block-end: 1em;
@@ -677,16 +681,18 @@ export default {
 }
 
 .headerFold {
-  width: 50px;
-  font-size: 25px;
-  text-align: center;
+  width: 200px;
+  text-align: left;
   position: absolute;
+  margin-left: 20px;
+  color: #fff;
 }
 
 .headerRight {
   width: 100px;
   position: absolute;
   right: 0px;
+  color: #fff;
 }
 
 /**左侧菜单 */
@@ -720,7 +726,7 @@ export default {
 .main {
   position: absolute;
   top: 50px;
-  left: 180px;
+  left:0px;
   bottom: 0px;
   right: 0px;
   //   padding: 10px;
@@ -776,5 +782,12 @@ export default {
   margin-top: 8vh !important;
   overflow-y: auto;
   height: 850px;
+}
+.el-icon-menu{
+  font-size: 15px;
+}
+.el-dropdown {
+    color: #fff;
+    font-size: 14px;
 }
 </style>
