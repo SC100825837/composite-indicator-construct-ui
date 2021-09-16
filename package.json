@@ -1,5 +1,5 @@
 {
-  "name": "zstp3",
+  "name": "composite-indicator-construct-ui",
   "version": "1.0.0",
   "description": "aaa",
   "author": "a",
@@ -10,10 +10,12 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@handsontable/vue": "^9.0.2",
     "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
     "echarts": "^4.8.0",
     "element-ui": "^2.15.5",
+    "handsontable": "^9.0.2",
     "vue": "^2.5.2",
     "vue-axios": "^3.2.5",
     "vue-resource": "^1.5.3",

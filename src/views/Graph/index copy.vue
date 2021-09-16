@@ -5,6 +5,7 @@
 import echarts from "echarts";
 import $axios from "../../utils/utils";
 import { expendNodes } from "./mock";
+import graph from "./index";
 // import axios from "axios";
 export default {
   name: "Charts",
@@ -29,7 +30,7 @@ export default {
       seriesData: [],
       seriesLinks: [],
       categories: [],
-      zstpDate: [],
+      graphDate: [],
       lastClickId: "",
     };
   },
@@ -40,7 +41,7 @@ export default {
       //获取画面初期值
       $axios.getZsptDate().then((res) => {
         //返回值数据获取
-        this.zstpDate = res.data.data;
+        this.graphDate = res.data.data;
         //调取图渲数据处理方法
         this.setZsptData();
       });
@@ -52,7 +53,7 @@ export default {
         categories[i] = {
           name: "层级" + i,
         };
-        let zstp = [
+        let graph = [
           {
             id: 10000,
             name: "盗墓笔记重启[南派三叔所著小说]", //节点名字
@@ -120,10 +121,10 @@ export default {
             ],
           },
         ];
-        this.zstpDate = zstp;
-        console.log("this.zstpDate", this.zstpDate);
+        this.graphDate = graph;
+        console.log("this.graphDate", this.graphDate);
 
-        this.formatData(zstp || [], categories, true);
+        this.formatData(graph || [], categories, true);
       }
     },
     /**
@@ -160,7 +161,7 @@ export default {
       return new Promise((resolve, reject) => {
         let totalList = [];
         //拆除来所有的children到第一层
-        this.zstpDate.forEach(item=>{
+        this.graphDate.forEach(item=>{
             getDeepChildrens(totalList,item,0)
         })
 

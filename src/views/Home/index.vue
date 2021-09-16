@@ -23,7 +23,7 @@
       </div>
     </div>
     <!-- <div class="navbar">
-      <div class="zstpRightMenu">
+      <div class="graphRightMenu">
         <i class="el-icon-menu"></i>
         <span style="color: #009cff">知识图谱</span>
       </div>
@@ -124,6 +124,7 @@
       </div>
       <div class="mainRight">
         <div class="mainHeader" style="text-align: right">
+          <el-button type="text" @click="toExcelPage()" style="margin-right:10px;font-size:15px;">Excel</el-button>
           <el-button type="text" @click="resetData()" style="margin-right:10px;font-size:15px;">数据重置</el-button>
           <el-button type="text" @click="dialogVisibleOriginData = true" style="margin-right:10px;font-size:15px;">原始数据集</el-button>
           <el-button type="text" @click="getProcessResult()" style="margin-right:10px;font-size:15px;"
@@ -137,7 +138,7 @@
           >
         </div>
         <div id="graphcontainerdiv" style="height: 94%">
-          <zstp :graphList="submitGraph" ref="zstp"/>
+          <graph :graphList="submitGraph" ref="graph"/>
         </div>
       </div>
     </div>
@@ -255,14 +256,15 @@
   </div>
 </template>
 <script>
-import zstp from "../zstp/index";
-import $axios from "../../utils/utils";
+import router from '@/router'
+import graph from "../Graph/index";
+import $axios from "@/utils/utils";
 import * as echarts from "echarts";
 
 export default {
-  name: "layout",
+  name: "home",
   components: {
-    zstp,
+    graph,
   },
   data() {
     return {
@@ -312,7 +314,7 @@ export default {
       //多变量分析
       multivariateAnalysisName: "",
       //知识图谱得初期
-      zstp: [],
+      graph: [],
       //地区名称
       countryName: "",
       value: "",
@@ -337,6 +339,9 @@ export default {
     // }
   },
   methods: {
+    toExcelPage() {
+      router.push('/excel')
+    },
     resetData() {
       $axios.resetData().then(res => {
         this.ifOriginDataModified = false;
@@ -352,7 +357,7 @@ export default {
           modifiedDataList: []
         },
         this.resetForm();
-        this.$refs.zstp.getTpData();
+        this.$refs.graph.getTpData();
         this.getOriginDataList();
       })
     },
@@ -501,7 +506,7 @@ export default {
           this.submitGraph.edges = res.data.data.compIndGraphEdge;
           this.submitGraph.nodes = res.data.data.compIndGraphNode;
           // // //返回值数据获取
-          // // this.zstpDate = res.data.data;
+          // // this.graphDate = res.data.data;
           // //调取图渲数据处理方法
           // this.setZsptData();
         });
@@ -708,7 +713,7 @@ export default {
   z-index: 1001;
 }
 
-.zstpRightMenu {
+.graphRightMenu {
   color: #009cff;
   position: absolute;
   font-size: 17px;
@@ -718,7 +723,7 @@ export default {
   line-height: 50px;
 }
 
-.zstpRightMenu:hover {
+.graphRightMenu:hover {
   background-color: #2c3e509c;
 }
 

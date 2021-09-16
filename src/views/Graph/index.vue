@@ -42,7 +42,7 @@ import $axios from "../../utils/utils";
 export default {
   data() {
     return {
-      zstpDate: {},
+      graphDate: {},
       nodesNew: [],
       dgFrom: {
         //弹出框得节点名称
@@ -84,8 +84,8 @@ export default {
     //立即创建被点击时
     getGrapDate(value) {
       if (value.submitOnFlg) {
-        this.zstpDate = {};
-        this.zstpDate = this.graphList;
+        this.graphDate = {};
+        this.graphDate = this.graphList;
         this.setZsptData();
       }
     },
@@ -94,7 +94,7 @@ export default {
       //获取画面初期值
       $axios.getZsptDate().then((res) => {
         //返回值数据获取
-        this.zstpDate = res.data.data;
+        this.graphDate = res.data.data;
         // console.log("getZsptDate()", res.data.data);
         // console.log('');
         //调取图渲数据处理方法
@@ -124,7 +124,7 @@ export default {
       myChart.resize();
       //数组去空
       var categories = [];
-      for (var i = 0; i < this.zstpDate.nodes.length; i++) {
+      for (var i = 0; i < this.graphDate.nodes.length; i++) {
         categories[i] = {
           name: "类目" + i,
         };
@@ -166,13 +166,13 @@ export default {
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
             edgeSymbol: ["circle", "arrow"],
             edgeSymbolSize: [2, 10],
-            edgeLabel: {
-              normal: {
-                textStyle: {
-                  fontSize: 20,
-                },
-              },
-            },
+            // edgeLabel: {
+            //   normal: {
+            //     textStyle: {
+            //       fontSize: 20,
+            //     },
+            //   },
+            // },
             force: {
               repulsion: 2500,
               edgeLength: [10, 50],
@@ -212,7 +212,7 @@ export default {
               },
             },
             // 数据
-            data: this.zstpDate.nodes.map(function (node) {
+            data: this.graphDate.nodes.map(function (node) {
               var dicValueFlg = false;
               if (node.attributes.indicatorValue) {
                 dicValueFlg = true;
@@ -233,7 +233,7 @@ export default {
               };
             }),
             //线数据
-            links: this.zstpDate.edges.map(function (edge) {
+            links: this.graphDate.edges.map(function (edge) {
               return {
                 //线得源头
                 source: edge.sourceID + "",
@@ -260,7 +260,7 @@ export default {
       //弹出框赋值
       var nodeName='';
       this.dgFrom.nodeId=params.data.id;
-      this.zstpDate.nodes.map(function (node) {
+      this.graphDate.nodes.map(function (node) {
          if(params.data.parentId===node.id){
            nodeName=node.attributes.name;
            return false;
@@ -300,7 +300,7 @@ export default {
       //调用指标值修改提交方式
       $axios.updataIndexValue(map).then((res) => {
         //修改id赋值
-        this.zstpDate.nodes.map(function (node) {
+        this.graphDate.nodes.map(function (node) {
          if(fromdata.nodeId===node.id){
            node.attributes.indicatorValue=fromdata.upIndicatorValue;
          }

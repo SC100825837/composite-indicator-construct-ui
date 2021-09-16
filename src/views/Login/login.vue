@@ -9,7 +9,7 @@
       class="card-box login-form"
       :rules="rules"
     >
-      <h3 class="title">知识图谱展示平台</h3>
+      <h3 class="title">综合指数构建工具</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <i class="el-icon-user-solid"></i>
@@ -77,15 +77,15 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$router.push(
-            { path:'/Layout',
+            { path:'/Home',
             query:{ username: this.loginForm.username }
-            }) 
+            })
           } else {
             console.log('error submit!!');
             return false;
           }
         });
-      }, 
+      },
   },
 };
 </script>
