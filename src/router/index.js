@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/Login/login'
-import Home from '@/views/Home/index'
-
+import layout from '@/views/layout/index'
+import home from '@/views/home/index'
 Vue.use(Router)
 
 export default new Router({
@@ -13,13 +13,32 @@ export default new Router({
       component: Login
     },
     {
-      path: '/Home',
-      name: 'Home',
-      component: Home
-    }, {
-      path: '/excel',
-      name: 'excel',
-      component: () => import('@/views/excel/index'),
+      path: '/home',
+      name: 'home',
+      component: home
     },
+    {
+      path: '/layout',
+      name: 'layout',
+      component: layout,
+      children:[{
+        path: '/layout/Graph',
+        name: 'Graph',
+        component: () => import('@/views/Graph/index'),
+      },
+      {
+        path: '/layout/excel',
+        name: 'excel',
+        component: () => import('@/views/excel/index'),
+      },
+      {
+        path: '/layout/excelData',
+        name: 'excelData',
+        component: () => import('@/views/excel/excelData'),
+      },
+    ]
+    }, 
+   
+    
   ]
 })

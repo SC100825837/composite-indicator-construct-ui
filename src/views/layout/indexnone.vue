@@ -1,138 +1,157 @@
 <template>
-  <div style="height: 97.5%" id="graph">
-    <div class="mainLeft">
-      <div class="change">
-        <i class="el-icon-share">选择算法</i>
+  <div>
+    <div class="header">
+      <!--左侧菜单展开关闭控制图标-->
+      <div class="headerFold">
+         <i class="el-icon-menu"></i>
+        <span style="color: #fff">指数构建</span>
+        <!-- <i class="el-icon-s-fold"></i> -->
+        </div>
+      <!--最右侧用户信息包退出操作-->
+      <div class="headerRight">
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            {{
+              this.$route.query.username
+            }}
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item><span @click="back">退出</span></el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
-      <el-card>
-        <el-form>
-          <el-form-item label="缺失值填补:">
-            <el-select
-              placeholder="请选择缺失值"
-              @change="getselectMissId($event)"
-              v-model="missDataImputationName"
-            >
-              <el-option
-                v-for="item in missDataImputationData"
-                :key="item.id"
-                :label="item.displayName"
-                :value="item.id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="多变量分析:">
-            <el-select
-              placeholder="请选择多变量值"
-              @change="getselectMulId($event)"
-              v-model="multivariateAnalysisName"
-            >
-              <el-option
-                v-for="item in multivariateAnalysisData"
-                :key="item.id"
-                :label="item.displayName"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="标准化:">
-            <el-select
-              placeholder="请选择标准化值"
-              @change="getselectNorId($event)"
-              v-model="normalisationDateName"
-            >
-              <el-option
-                v-for="item in normalisationDate"
-                :key="item.id"
-                :label="item.displayName"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="权重与聚合:">
-            <el-select
-              placeholder="请选择权重与聚合值"
-              @change="getselectWegId($event)"
-              v-model="wegAndADataName"
-            >
-              <el-option
-                v-for="item in wegAndAData"
-                :key="item.id"
-                :label="item.displayName"
-                :value="item.id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="构建对象:">
-            <el-select
-              placeholder="请选择构建对象"
-              @change="getselectId($event)"
-              v-model="countryName"
-            >
-              <el-option
-                v-for="item in constructTargets"
-                :key="item.id"
-                :label="item.targetName"
-                :value="item.id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitIndicatorCalc"
-              >指数计算
-            </el-button>
-            <el-button @click="resetForm()">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
     </div>
-    <div class="mainRight">
-      <div id="mainHeader2">
-      <div class="tupuShow"><i class="el-icon-s-marketing">图谱展示</i></div>
-      <div class="btnShow">
-        <el-button type="warning" @click="resetData()">数据重置</el-button>
-<!--        <el-button type="primary" @click="dialogVisibleOriginData = true"
-          >原始数据集</el-button
-        >-->
-        <el-button
-          type="primary"
-          @click="getProcessResult()"
-          :disabled="showVisiblePR"
-          >查看过程结果
-        </el-button>
-        <el-button
-          type="text"
-          class="fullScreen"
-          icon="el-icon-full-screen"
-          @click="requestFullScreen"
-        ></el-button>
-        <!-- <a
-          href="javascript:void(0)"
-          @click="requestFullScreen"
-          class="fullScreen"
-          >全屏</a
-        > -->
+    <div class="navbar">
+      <div class="graphRightMenu">
+        <i class="el-icon-menu"></i>
+        <span style="color: #009cff">知识图谱</span>
+      </div>
+    </div>
+    <div class="main">
+      <div class="mainLeft">
+        <div>
+          <el-card class="mainLeft">
+            <div slot="header" class="clearfix">
+              <span>选择算法</span>
+            </div>
+            <div>
+              <el-form>
+                <el-form-item label="缺失值填补:">
+                  <el-select
+                    placeholder="请选择缺失值"
+                    @change="getselectMissId($event)"
+                    v-model="missDataImputationName"
+                  >
+                    <el-option
+                      v-for="item in missDataImputationData"
+                      :key="item.id"
+                      :label="item.displayName"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="多变量分析:">
+                  <el-select
+                    placeholder="请选择多变量值"
+                    @change="getselectMulId($event)"
+                    v-model="multivariateAnalysisName"
+                  >
+                    <el-option
+                      v-for="item in multivariateAnalysisData"
+                      :key="item.id"
+                      :label="item.displayName"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="标准化:">
+                  <el-select
+                    placeholder="请选择标准化值"
+                    @change="getselectNorId($event)"
+                    v-model="normalisationDateName"
+                  >
+                    <el-option
+                      v-for="item in normalisationDate"
+                      :key="item.id"
+                      :label="item.displayName"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="权重与聚合:">
+                  <el-select
+                    placeholder="请选择权重与聚合值"
+                    @change="getselectWegId($event)"
+                    v-model="wegAndADataName"
+                  >
+                    <el-option
+                      v-for="item in wegAndAData"
+                      :key="item.id"
+                      :label="item.displayName"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="地区:">
+                  <el-select
+                    placeholder="请选择地区"
+                    @change="getselectId($event)"
+                    v-model="countryName"
+                  >
+                    <el-option
+                      v-for="item in countrys"
+                      :key="item.id"
+                      :label="item.countryName"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item class="buttonBtm">
+                  <el-button type="primary" @click="submitIndicatorCalc"
+                  >指数计算
+                  </el-button
+                  >
+                  <el-button @click="resetForm()">取消</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-card>
         </div>
       </div>
-      <el-card id="graphcontainerdiv" style="height: 95.3%">
-        <graph :graphList="submitGraph" ref="graph" />
-      </el-card>
+      <div class="mainRight">
+        <div class="mainHeader" style="text-align: right">
+          <el-button type="text" @click="toExcelPage()" style="margin-right:10px;font-size:15px;">Excel</el-button>
+          <el-button type="text" @click="resetData()" style="margin-right:10px;font-size:15px;">数据重置</el-button>
+          <el-button type="text" @click="dialogVisibleOriginData = true" style="margin-right:10px;font-size:15px;">原始数据集</el-button>
+          <el-button type="text" @click="getProcessResult()" style="margin-right:10px;font-size:15px;"
+                     :disabled='showVisiblePR'>查看过程结果
+          </el-button>
+          <a
+            href="javascript:void(0)"
+            @click="requestFullScreen"
+            class="fullScreen"
+          >全屏</a
+          >
+        </div>
+        <div id="graphcontainerdiv" style="height: 94%">
+          <!-- <graph :graphList="submitGraph" ref="graph"/> -->
+        <excel/>
+        </div>
+      </div>
     </div>
+
     <div class="origin-data-container">
-      <el-dialog
-        title="原始数据集"
-        :modal-append-to-body="false"
-        :visible.sync="dialogVisibleOriginData"
-        center
-        append-to-body
-        width="65%"
-      >
+      <el-dialog title="原始数据集" :modal-append-to-body='false' :visible.sync="dialogVisibleOriginData" center append-to-body width="65%" >
+
         <el-form :inline="true" size="medium" label-width="120px">
           <el-row :gutter="10">
             <el-col>
-              <el-table :data="originDataTable" stripe style="width: 100%">
+              <el-table :data="originDataTable" stripe style="width: 100%" >
+
                 <!--                1、在每个需要点击可编辑的列里面都放置一个和那个列宽高都相等，且样式都一样的input输入框
                                 2、使用v-if和v-else来控制input和span
                                 3、让input的v-model和span绑定值是同一个，再定义一个变量来控制input和span的显示隐藏切换
@@ -143,29 +162,18 @@
                   :label="item"
                   width="90%"
                   align="center"
-                  :key="index"
-                  v-for="(item, index) in Object.keys(
-                    originDataTable[0] ? originDataTable[0] : {}
-                  )"
-                >
-                  <template slot-scope="{ row, $index }">
+                  :key="index" v-for="(item, index) in Object.keys(originDataTable[0] ? originDataTable[0] : {})" >
+                  <template slot-scope="{row,$index}">
                     <!--                    前两列是id和国家名字不能编辑-->
                     <el-input
-                      v-if="
-                        ifEdit &&
-                        Object.keys(originDataTable[0]).length > 2 &&
-                        item !== Object.keys(originDataTable[0])[0] &&
-                        item !== Object.keys(originDataTable[0])[1]
-                      "
+                      v-if="ifEdit && Object.keys(originDataTable[0]).length > 2 && item !== Object.keys(originDataTable[0])[0] && item !== Object.keys(originDataTable[0])[1]"
                       v-model="row[item]"
                       @blur="loseFocus(row, $index)"
-                      >{{ row[item] }}</el-input
-                    >
-                    <span v-else @click="handleEdit(item)">{{
-                      row[item]
-                    }}</span>
+                    >{{row[item]}}</el-input>
+                    <span v-else @click="handleEdit(item)">{{row[item]}}</span>
                   </template>
                 </el-table-column>
+
               </el-table>
             </el-col>
           </el-row>
@@ -174,6 +182,7 @@
           <el-button @click="dialogVisibleOriginData = false">取 消</el-button>
           <el-button type="primary" @click="getModifiedData()">确 定</el-button>
         </span>
+
       </el-dialog>
     </div>
 
@@ -206,11 +215,13 @@
                     style="width: 100%"
                   >
                     <el-table-column
-                      :prop="item"
-                      :label="item"
+                      :prop="Object.keys(alResultItem.data[index])[index]"
+                      :label="Object.keys(alResultItem.data[index])[index]"
                       width="90%"
                       :key="index"
-                      v-for="(item, index) in Object.keys(alResultItem.data[0])"
+                      v-for="(item, index) in Object.keys(
+                        alResultItem.data[0] ? alResultItem.data[0] : {}
+                      ).length"
                     >
                     </el-table-column>
                   </el-table>
@@ -231,7 +242,7 @@
                       <el-form-item>
                         <div
                           :id="item.title"
-                          style="width: 500px; height: 400px; padding-top: 40px"
+                          style="width: 500px; height: 400px; padding-top: 40px;"
                         ></div>
                       </el-form-item>
                     </el-col>
@@ -246,14 +257,16 @@
   </div>
 </template>
 <script>
-import router from "@/router";
-import graph from "./components/zstp.vue";
+import router from '@/router'
+import graph from "../Graph/index";
 import $axios from "@/utils/utils";
 import * as echarts from "echarts";
+import excel from "../excel/index";
 export default {
-  name: "zstp",
+  name: "layout",
   components: {
     graph,
+    excel,
   },
   data() {
     return {
@@ -273,7 +286,7 @@ export default {
       //展示算法计算过程结果的弹窗
       showVisiblePR: true,
       //城市下拉框
-      constructTargets: [],
+      countrys: [],
       pzxData: {
         //算法选择参数
         algorithms: {
@@ -284,8 +297,7 @@ export default {
         },
         //地区得选择id
         targetId: "",
-        modifiedDataList: [],
-        ciFrameworkObjectId: 0,
+        modifiedDataList: []
       },
       //标准化
       normalisationDate: [],
@@ -319,11 +331,8 @@ export default {
     };
   },
   created() {
-    this.getRecentlyCiFrameworkObjectId();
-    // this.getData();
-    // this.recentlyId = window.sessionStorage.getItem("recentlyId")
-
-    // this.getOriginDataList();
+    this.getData();
+    this.getOriginDataList();
   },
   watch: {
     // 监控原始数据集数据，发生改变的时候跟新单元格显示状态
@@ -332,35 +341,27 @@ export default {
     // }
   },
   methods: {
-    getRecentlyCiFrameworkObjectId() {
-      $axios.getRecentlyCiFrameworkObjectId().then((result) => {
-        // console.log("result", result);
-        this.recentlyId = result.data.data;
-        window.sessionStorage.setItem("recentlyId", this.recentlyId)
-        this.getData();
-      });
-    },
     toExcelPage() {
-      router.push("/excel");
+      router.push('/excel')
     },
     resetData() {
-      $axios.resetData().then((res) => {
+      $axios.resetData().then(res => {
         this.ifOriginDataModified = false;
-        (this.pzxData = {
+        this.pzxData = {
           //算法选择参数
           algorithms: {
             missDataImputation: "",
-            multivariateAnalysis: "",
-            normalisation: "",
-            weightingAndAggregation: "",
+              multivariateAnalysis: "",
+              normalisation: "",
+              weightingAndAggregation: "",
           },
           targetId: "",
-          modifiedDataList: [],
-        }),
-          this.resetForm();
+          modifiedDataList: []
+        },
+        this.resetForm();
         this.$refs.graph.getTpData();
-        // this.getOriginDataList();
-      });
+        this.getOriginDataList();
+      })
     },
     getModifiedData() {
       // console.log("getModifiedData", JSON.stringify(this.originDataTable))
@@ -379,11 +380,11 @@ export default {
     },
     //获取原始数据集
     getOriginDataList() {
-      $axios.getOriginDataList().then((res) => {
+      $axios.getOriginDataList().then(res => {
         // console.log("getOriginDataList - res", res)
-        this.originDataTable = res.data.data;
+        this.originDataTable = res.data.data
         // this.dialogVisibleOriginData = true;
-      });
+      })
     },
     //打开弹窗后执行的方法,据说是个延迟函数，不然打开弹窗没有值，应该是弹窗打开的时候没有渲染完成
     open() {
@@ -404,9 +405,9 @@ export default {
             var chartDom = document.getElementById(weightPR.title);
             //echars图得显示位置控制
             if (weightPR.title === "相关性矩阵") {
-              chartDom.style.paddingLeft = 0 + "px";
+              chartDom.style.paddingLeft = 0 + 'px';
             } else {
-              chartDom.style.paddingLeft = 120 + "px";
+              chartDom.style.paddingLeft = 120 + 'px';
             }
             var myChart = echarts.init(chartDom);
             var option;
@@ -422,7 +423,7 @@ export default {
                 text: text,
                 textStyle: {
                   fontSize: 13,
-                  fontWeight: "lighter",
+                  fontWeight: "lighter"
                 },
               },
               tooltip: {
@@ -431,7 +432,7 @@ export default {
               grid: {
                 height: "50%",
                 top: "10%",
-                left: "20%",
+                left: '20%'
               },
               xAxis: {
                 type: "category",
@@ -479,7 +480,7 @@ export default {
     },
     //拿到过程结果数据
     getProcessResult() {
-      $axios.getProcessResult(this.recentlyId).then((res) => {
+      $axios.getProcessResult().then((res) => {
         // console.log("getProcessResult - res", res)
         this.processResult = res.data.data;
         //赋值完成后打开弹窗
@@ -488,9 +489,8 @@ export default {
     },
     // 点击提交
     submitIndicatorCalc() {
-      this.pzxData.ciFrameworkObjectId = window.sessionStorage.getItem("recentlyId")
       if (this.ifOriginDataModified) {
-        this.pzxData.modifiedDataList = this.originDataTable;
+        this.pzxData.modifiedDataList = this.originDataTable
         $axios.getIndicatorCalc(this.pzxData).then((res) => {
           //可查看计算结果
           this.showVisiblePR = false;
@@ -537,14 +537,13 @@ export default {
     },
     //返回登录页面
     back() {
-      this.$router.push({ path: "/" });
+      this.$router.push({path: "/"});
     },
     //获取初期配置项下拉菜单相关得数据
     getData() {
-      //获取构建对象数据
-      // console.log("getData", window.sessionStorage.getItem("recentlyId"))
-      $axios.getAllCiConstructTargets(window.sessionStorage.getItem("recentlyId")).then((res) => {
-        this.constructTargets = res.data.data;
+      //获取地区数据
+      $axios.getCountryDate().then((res) => {
+        this.countrys = res.data.data;
       });
       //获取算法相关数据
       $axios.getAlgorithmsAllDate().then((res) => {
@@ -626,7 +625,7 @@ export default {
     //获取地区下拉框id
     getselectId(id) {
       //  let obj = {};
-      // obj = this.constructTargets.find((item) => {
+      // obj = this.countrys.find((item) => {
       //   return item.id === id
       // });
       this.pzxData.targetId = id + "" ? id + "" : "";
@@ -650,20 +649,12 @@ export default {
 };
 </script>
 <style lang="scss">
-#graph{
-.change {
-  text-align: left;
-  line-height: 45px;
-  background: #fafafa;
-  padding-left: 10px;
-  color: #666;
-}
 #item2 {
   font-size: 14px !important;
 }
+
 #graphcontainerdiv {
   background: #f9fbfd;
-  margin: 0px 10px 0px 10px;
 }
 
 #result-container {
@@ -676,12 +667,54 @@ export default {
     font-size: 16px !important;
   }
 }
-#graphcontainerdiv {
-  .el-card__body {
-    padding: 0px;
-    height: 100%;
-  }
+
+/**头部样式 */
+.header {
+  position: absolute;
+  line-height: 50px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  //   background-color: #2d3a4b;
+  border-bottom: solid 1px #e6e6e6;
+  background: #203d0afa;
+  height: 50px;
+  //   margin-block-start: 1em;
+  // margin-block-end: 1em;
+  // margin-inline-start: 0px;
+  // margin-inline-end: 0px;
+  // padding-inline-start: 40px;
+  border-radius: 0px !important;
 }
+
+.headerFold {
+  width: 200px;
+  text-align: left;
+  position: absolute;
+  margin-left: 20px;
+  color: #fff;
+}
+
+.headerRight {
+  width: 100px;
+  position: absolute;
+  right: 0px;
+  color: #fff;
+}
+
+/**左侧菜单 */
+.navbar {
+  position: absolute;
+  width: 180px;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  overflow: auto;
+  background-color: rgb(48, 65, 86);
+  z-index: 1001;
+}
+
 .graphRightMenu {
   color: #009cff;
   position: absolute;
@@ -711,41 +744,43 @@ export default {
 .mainLeft {
   position: absolute;
   width: 300px;
-  margin: 10px 0px 0px 10px;
-  // border: 1px solid #35475e45;
+  border: 1px solid #35475e45;
   border-top: transparent;
   top: 1px;
-  // height: 98.7%;
+  height: 100%;
   box-shadow: transparent !important;
 }
 
 .mainRight {
   //   background-color: red;
-  margin-left: 310px;
+  margin-left: 300px;
   height: 100%;
 }
-#mainHeader2 {
-  margin: 10px 10px 0px 10px;
-  line-height: 45px;
-  background: #fafafa;
-  .tupuShow{
-    width: 20%;
-    float: left;
-    text-align: left;
-    padding-left: 10px;
-  };
-  .btnShow{
-    text-align: right;
-    padding-right: 10px;
-  };
-  .el-card__body {
-    padding: 0px !important;
-  }
-  .el-button {
-    line-height: 0.5;
-  }
+
+.mainHeader {
+  height: 50px;
+  line-height: 50px;
+  border-bottom: solid 1px #e6e6e6;
 }
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.buttonBtm {
+  position: absolute;
+  left: 50px;
+  bottom: 0px;
+}
+
 .fullScreen {
+  margin-right: 25px;
   text-decoration: none;
   color: black;
 }
@@ -755,11 +790,11 @@ export default {
   overflow-y: auto;
   height: 850px;
 }
-.el-icon-menu {
+.el-icon-menu{
   font-size: 15px;
 }
 .el-dropdown {
-  color: #fff;
-  font-size: 14px;
-}}
+    color: #fff;
+    font-size: 14px;
+}
 </style>

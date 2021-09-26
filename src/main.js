@@ -6,6 +6,8 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store/store'
+//引用共通样式
+import './views/css/common.scss'
 import * as echarts from 'echarts'
 import axios from 'axios'
 import VueAxios from 'vue-axios'

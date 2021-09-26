@@ -1,8 +1,17 @@
-<template>
+/* <template>
   <div>
     <el-card class="exMain">
       <div class="btnSingleLine">
-        <el-upload
+        <el-button @click="previewExcelContent" type="primary" size="small"
+          >数据加载</el-button
+        >
+        <el-button size="small" type="warning">上传Excel</el-button>
+        <el-button size="small" type="primary" style="margin-left: 85%;"
+          @click="$router.back()">返回</el-button>
+      </div>
+      <div id="excel-manager">
+        <div class="dataUpdata2">
+            <el-upload
           class="upload-demo"
           action="http://localhost:6060/file/upload"
           accept=".xlsx,.xls"
@@ -14,62 +23,25 @@
           :auto-upload="true"
           :show-file-list="false"
         >
-          <el-button size="small" type="warning">上传Excel</el-button>
           <!--            <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过500kb</div>-->
         </el-upload>
-        <el-button
-          size="small"
-          type="primary"
-          style="margin-left: 91%"
-          @click="$router.back()"
-          >返回</el-button
-        >
-      </div>
-      <div id="excel-manager">
-        <div class="dataUpdata">
         </div>
-        <el-table
-          :data="excelList"
-          style="width: 100%; margin-top: 10px"
-          border
-          highlight-current-row
+        <hot-table
+          ref="hotTableComponent"
+          :settings="excelSettings"
+          :data="excelData"
+          style="width: 90%;"
         >
-          <el-table-column fixed prop="frameworkObjectName" sortable label="名称">
-          </el-table-column>
-          <el-table-column prop="uploadDate" sortable label="上传时间">
-          </el-table-column>
-          <el-table-column prop="uploaderId" sortable label="上传者"> </el-table-column>
-          <el-table-column fixed="right" label="操作" width="120">
-            <template slot-scope="scope">
-              <el-button
-                @click="handleClick(scope.row)"
-                type="text"
-                size="small"
-                >查看</el-button
-              >
-              <el-button
-                @click.native.prevent="deleteRow(scope.$index, excelData)"
-                style="color: red"
-                type="text"
-                size="small"
-              >
-                移除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total=total
+          <hot-column
+            :title="item"
+            :data="item"
+            :key="index"
+            v-for="(item, index) in Object.keys(
+              excelData[0] ? excelData[0] : {}
+            )"
           >
-          </el-pagination>
-        </div>
+          </hot-column>
+        </hot-table>
       </div>
     </el-card>
   </div>
@@ -89,12 +61,6 @@ export default {
   },
   data() {
     return {
-      //当前页数
-      currentPage4:1,
-      pageSize:10,
-      //总条目
-      total:0,
-      excelList: [],
       //表格数据
       excelData: [
         // { id: 1, name: 'Table tennis racket', price: 13, currency: 'PLN'},
@@ -141,17 +107,22 @@ export default {
     };
   },
   created() {
-    //表格数据得初期显示
-    this.getCiFrameworkList();
+    // 请求id
+    var previewExcelId = this.$route.query.id;
+    // 设置初期默认值
+    this.previewExcelContent(previewExcelId);
   },
   methods: {
-    //表格数据显示
-    getCiFrameworkList() {
-      $axios.ciFrameworkList().then((res) => {
-        // console.log("result", res.data);
-        this.excelList = res.data.data;
-        this.total=res.data.data.length;
-        // console.log('this.total',this.total);
+    previewExcelContent(previewExcelId) {
+      $axios.previewExcelContent(previewExcelId, 1).then((result) => {
+        // console.log("result", result);
+        let resultArr = result.data.data;
+        // this.excelData = result.data.data
+        // this.excelData = []
+        for (const row of resultArr) {
+          this.excelData.push(row);
+        }
+        console.log("this.excelData", this.excelData);
       });
     },
     beforeUpload(file) {
@@ -169,29 +140,10 @@ export default {
       // The Handsontable instance is stored under the `hotInstance` property of the wrapper component.
       this.$refs.hotTableComponent.hotInstance.loadData([["new", "data"]]);
     },
-    //表格高亮现实
-    handleCurrentChange(val) {
-      this.currentRow = val;
-    },
-    //点击查看页面跳转
-    handleClick(rows) {
-      this.$router.push({ path: "/layout/excelData", query: { id: rows.id } });
-    },
-    //表格数据行删除
-    deleteRow(index, rows) {
-      console.log("deleteRow", index, rows)
-      rows.splice(index, 1);
-      $axios.deleteCiFrameworkObject(window.sessionStorage.getItem("recentlyId")).then((res) => {
-      });
-    },
-    // 每页 ${val} 条分页
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    //当前页: ${val}
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
+    // //返回
+    // goBack(){
+    //     ;
+    // }
   },
 };
 </script>
@@ -201,7 +153,10 @@ export default {
   margin: 0;
   padding: 0;
 }
-
+.btnExcel{
+    line-height: 50px;
+    text-align: left;
+}
 .el-table thead tr th {
   background: #f5f5f5;
   color: #808080;
@@ -218,7 +173,8 @@ export default {
   width: 98%;
   margin: 10px;
 }
-.dataUpdata {
+.dataUpdata2 {
+  left: 42px;
   position: absolute;
   top: 35px;
   border-radius: 5px;
@@ -233,11 +189,8 @@ export default {
 .handsontable span.colHeader {
   line-height: 2.2 !important;
 }
-.block {
-  text-align: right;
-  margin-top: 10px;
-}
 </style>
 
 
 <style src="../../../node_modules/handsontable/dist/handsontable.full.css"></style>
+ */

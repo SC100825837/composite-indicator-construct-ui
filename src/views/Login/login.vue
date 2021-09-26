@@ -32,7 +32,7 @@
           autoComplete="on"
         ></el-input>
         <span class="show-pwd" @click="showPwd"
-          ><i class="el-icon-view"></i
+        ><i class="el-icon-view"></i
         ></span>
       </el-form-item>
       <el-form-item>
@@ -53,14 +53,14 @@ export default {
         username: "admin",
         password: "password",
       },
-       rules: {
-          username: [
-            { required: true, message: '请输入用户名', },
-          ],
-          password: [
-            { required: true, message: '请输入密码',}
-          ],
-        },
+      rules: {
+        username: [
+          {required: true, message: '请输入用户名',},
+        ],
+        password: [
+          {required: true, message: '请输入密码',}
+        ],
+      },
       loading: false,
       pwdType: "password",
     };
@@ -73,24 +73,25 @@ export default {
         this.pwdType = "password";
       }
     },
-     go(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$router.push(
-            { path:'/Home',
-            query:{ username: this.loginForm.username }
+    go(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$router.push(
+            {
+              path: '/layout/Graph',
+              query: {username: this.loginForm.username}
             })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
   },
 };
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 * {
   margin: 0;
   padding: 0;
@@ -99,6 +100,7 @@ export default {
 #app {
   margin-top: 0px;
 }
+
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
@@ -108,10 +110,12 @@ $light_gray: #eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
+
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
     -webkit-text-fill-color: #fff !important;
   }
+
   input {
     background: transparent;
     border: 0px;
@@ -121,26 +125,31 @@ $light_gray: #eee;
     color: $light_gray;
     height: 47px;
   }
+
   .el-input {
     display: inline-block;
     height: 47px;
     width: 85%;
   }
+
   .tips {
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
   }
+
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
+
     &_login {
       font-size: 20px;
     }
   }
+
   .title {
     font-size: 26px;
     font-weight: 400;
@@ -149,6 +158,7 @@ $light_gray: #eee;
     text-align: center;
     font-weight: bold;
   }
+
   .login-form {
     position: absolute;
     left: 0;
@@ -157,12 +167,14 @@ $light_gray: #eee;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
+
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
   }
+
   .show-pwd {
     position: absolute;
     right: 10px;
@@ -172,6 +184,7 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
+
   .thirdparty-button {
     position: absolute;
     right: 35px;
