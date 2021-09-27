@@ -96,6 +96,11 @@ export default {
     },
     //获取知识图谱数据
     getTpData() {
+      // sessionstorage里面存的是null字符串
+      if (this.recentlyId === null || this.recentlyId === "null") {
+        this.$message.warning("数据为空，请导入数据")
+        return;
+      }
       //获取画面初期值
       $axios.getZsptDate(this.recentlyId).then((res) => {
         //返回值数据获取

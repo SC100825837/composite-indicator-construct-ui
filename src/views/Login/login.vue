@@ -78,7 +78,7 @@ export default {
         if (valid) {
           this.$router.push(
             {
-              path: '/layout/Graph',
+              path: '/layout/home',
               query: {username: this.loginForm.username}
             })
         } else {

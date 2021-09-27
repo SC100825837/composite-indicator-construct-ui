@@ -2,6 +2,7 @@ import Axios from "axios";
 import Qs from 'qs';
 
 const ipAndPort = 'http://127.0.0.1:6060/';
+// const ipAndPort = 'http://192.168.2.158:6060/';
 
 //获取构建对象数据
 function getAllCiConstructTargets(recentlyId) {
@@ -115,6 +116,23 @@ function deleteCiFrameworkObject(ciFrameworkObjectId) {
   })
 }
 
+//获取首页柱线对象的数据
+function getCiFrameworkObjectInfo(ciFrameworkObjectId) {
+  //debugger
+  return Axios({
+    method: 'get',
+    url: ipAndPort + 'ciFrameworkObject/getCiFrameworkObjectInfo/' + ciFrameworkObjectId
+  })
+}
+
+// 切换架构对象
+function switchFrameObj(ciFrameworkObjectId) {
+  return Axios({
+    method: 'get',
+    url: ipAndPort + 'ciFrameworkObject/switchFrameObj/' + ciFrameworkObjectId
+  })
+}
+
 export default {
   getAllCiConstructTargets,
   getAlgorithmsAllDate,
@@ -127,5 +145,7 @@ export default {
   previewExcelContent,
   getRecentlyCiFrameworkObjectId,
   ciFrameworkList,
-  deleteCiFrameworkObject
+  deleteCiFrameworkObject,
+  getCiFrameworkObjectInfo,
+  switchFrameObj
 }

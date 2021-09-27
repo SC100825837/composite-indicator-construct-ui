@@ -21,7 +21,13 @@ export default new Router({
       path: '/layout',
       name: 'layout',
       component: layout,
-      children:[{
+      children:[
+        {
+          path: '/layout/home',
+          name: 'home',
+          component: home
+        },
+        {
         path: '/layout/Graph',
         name: 'Graph',
         component: () => import('@/views/Graph/index'),

@@ -81,7 +81,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitIndicatorCalc"
-              >指数计算
+            >指数计算
             </el-button>
             <el-button @click="resetForm()">取消</el-button>
           </el-form-item>
@@ -90,34 +90,34 @@
     </div>
     <div class="mainRight">
       <div id="mainHeader2">
-      <div class="tupuShow"><i class="el-icon-s-marketing">图谱展示</i></div>
-      <div class="btnShow">
-        <el-button type="warning" @click="resetData()">数据重置</el-button>
-<!--        <el-button type="primary" @click="dialogVisibleOriginData = true"
-          >原始数据集</el-button
-        >-->
-        <el-button
-          type="primary"
-          @click="getProcessResult()"
-          :disabled="showVisiblePR"
+        <div class="tupuShow"><i class="el-icon-s-marketing">图谱展示</i></div>
+        <div class="btnShow">
+          <el-button type="warning" @click="resetData()">数据重置</el-button>
+          <!--        <el-button type="primary" @click="dialogVisibleOriginData = true"
+                    >原始数据集</el-button
+                  >-->
+          <!-- :disabled="showVisiblePR" -->
+          <el-button
+            type="primary"
+            @click="getProcessResult()"
           >查看过程结果
-        </el-button>
-        <el-button
-          type="text"
-          class="fullScreen"
-          icon="el-icon-full-screen"
-          @click="requestFullScreen"
-        ></el-button>
-        <!-- <a
-          href="javascript:void(0)"
-          @click="requestFullScreen"
-          class="fullScreen"
-          >全屏</a
-        > -->
+          </el-button>
+          <el-button
+            type="text"
+            class="fullScreen"
+            icon="el-icon-full-screen"
+            @click="requestFullScreen"
+          ></el-button>
+          <!-- <a
+            href="javascript:void(0)"
+            @click="requestFullScreen"
+            class="fullScreen"
+            >全屏</a
+          > -->
         </div>
       </div>
       <el-card id="graphcontainerdiv" style="height: 95.3%">
-        <graph :graphList="submitGraph" ref="graph" />
+        <graph :graphList="submitGraph" ref="graph"/>
       </el-card>
     </div>
     <div class="origin-data-container">
@@ -129,19 +129,18 @@
         append-to-body
         width="65%"
       >
-        <el-form :inline="true" size="medium" label-width="120px">
+        <el-form :inline="true" label-width="120px">
           <el-row :gutter="10">
             <el-col>
-              <el-table :data="originDataTable" stripe style="width: 100%">
-                <!--                1、在每个需要点击可编辑的列里面都放置一个和那个列宽高都相等，且样式都一样的input输入框
-                                2、使用v-if和v-else来控制input和span
-                                3、让input的v-model和span绑定值是同一个，再定义一个变量来控制input和span的显示隐藏切换
-                                4、当点击span的时候，span隐藏，input显示，这时显示的内容因为是和span绑定的内容一致的，所以更改会实时生效，不用事件去控制
-                                5、当input失去焦点，input隐藏span显示-->
+              <el-table :data="originDataTable">
+                <!--1、在每个需要点击可编辑的列里面都放置一个和那个列宽高都相等，且样式都一样的input输入框
+                    2、使用v-if和v-else来控制input和span
+                    3、让input的v-model和span绑定值是同一个，再定义一个变量来控制input和span的显示隐藏切换
+                    4、当点击span的时候，span隐藏，input显示，这时显示的内容因为是和span绑定的内容一致的，所以更改会实时生效，不用事件去控制
+                    5、当input失去焦点，input隐藏span显示-->
                 <el-table-column
                   :prop="item"
                   :label="item"
-                  width="90%"
                   align="center"
                   :key="index"
                   v-for="(item, index) in Object.keys(
@@ -159,11 +158,12 @@
                       "
                       v-model="row[item]"
                       @blur="loseFocus(row, $index)"
-                      >{{ row[item] }}</el-input
+                    >{{ row[item] }}
+                    </el-input
                     >
                     <span v-else @click="handleEdit(item)">{{
-                      row[item]
-                    }}</span>
+                        row[item]
+                      }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -186,7 +186,7 @@
         center
         width="65%"
       >
-        <el-form :inline="true" size="medium" label-width="120px">
+        <el-form :inline="true" label-width="120px">
           <el-row :gutter="10">
             <el-col
               :key="alResultIndex"
@@ -197,19 +197,17 @@
                 <el-form
                   v-if="!alResultItem.isContainPR"
                   :inline="true"
-                  size="medium"
                 >
                   <el-table
                     v-if="!alResultItem.isContainPR"
                     :data="alResultItem.data"
-                    stripe
-                    style="width: 100%"
+                    style="width:980px;margin-top:20px"
                   >
                     <el-table-column
                       :prop="item"
                       :label="item"
-                      width="90%"
                       :key="index"
+                      width="90%"
                       v-for="(item, index) in Object.keys(alResultItem.data[0])"
                     >
                     </el-table-column>
@@ -220,8 +218,6 @@
                 <el-form
                   v-if="alResultItem.isContainPR"
                   :inline="true"
-                  size="medium"
-                  label-width="100px"
                 >
                   <el-row :gutter="10">
                     <el-col
@@ -231,7 +227,7 @@
                       <el-form-item>
                         <div
                           :id="item.title"
-                          style="width: 500px; height: 400px; padding-top: 40px"
+                          style="width:980px;height:500px;margin-top:30px"
                         ></div>
                       </el-form-item>
                     </el-col>
@@ -250,6 +246,7 @@ import router from "@/router";
 import graph from "./components/zstp.vue";
 import $axios from "@/utils/utils";
 import * as echarts from "echarts";
+
 export default {
   name: "zstp",
   components: {
@@ -319,9 +316,8 @@ export default {
     };
   },
   created() {
-    this.getRecentlyCiFrameworkObjectId();
-    // this.getData();
-    // this.recentlyId = window.sessionStorage.getItem("recentlyId")
+    this.recentlyId = window.sessionStorage.getItem("recentlyId")
+    this.getData();
 
     // this.getOriginDataList();
   },
@@ -332,18 +328,15 @@ export default {
     // }
   },
   methods: {
-    getRecentlyCiFrameworkObjectId() {
-      $axios.getRecentlyCiFrameworkObjectId().then((result) => {
-        // console.log("result", result);
-        this.recentlyId = result.data.data;
-        window.sessionStorage.setItem("recentlyId", this.recentlyId)
-        this.getData();
-      });
-    },
     toExcelPage() {
       router.push("/excel");
     },
     resetData() {
+      // sessionstorage里面存的是null字符串
+      if (this.recentlyId === null || this.recentlyId === "null") {
+        this.$message.warning("数据为空，请导入数据")
+        return;
+      }
       $axios.resetData().then((res) => {
         this.ifOriginDataModified = false;
         (this.pzxData = {
@@ -429,9 +422,10 @@ export default {
                 position: "top",
               },
               grid: {
-                height: "50%",
-                top: "10%",
-                left: "20%",
+                height: '80%',
+                width: '90%',
+                top: "5%",
+                left: "10%",
               },
               xAxis: {
                 type: "category",
@@ -453,7 +447,7 @@ export default {
                 calculable: true,
                 orient: "horizontal",
                 left: "center",
-                bottom: "15%",
+                bottom: "0%",
               },
               series: [
                 {
@@ -537,13 +531,13 @@ export default {
     },
     //返回登录页面
     back() {
-      this.$router.push({ path: "/" });
+      this.$router.push({path: "/"});
     },
     //获取初期配置项下拉菜单相关得数据
     getData() {
       //获取构建对象数据
       // console.log("getData", window.sessionStorage.getItem("recentlyId"))
-      $axios.getAllCiConstructTargets(window.sessionStorage.getItem("recentlyId")).then((res) => {
+      $axios.getAllCiConstructTargets(this.recentlyId).then((res) => {
         this.constructTargets = res.data.data;
       });
       //获取算法相关数据
@@ -650,116 +644,131 @@ export default {
 };
 </script>
 <style lang="scss">
-#graph{
-.change {
-  text-align: left;
-  line-height: 45px;
-  background: #fafafa;
-  padding-left: 10px;
-  color: #666;
-}
-#item2 {
-  font-size: 14px !important;
-}
-#graphcontainerdiv {
-  background: #f9fbfd;
-  margin: 0px 10px 0px 10px;
-}
-
-#result-container {
-  .el-table th > .cell {
-    width: 125%;
-    color: #4c4b4be6;
+#graph {
+  .change {
+    text-align: left;
+    line-height: 45px;
+    background: #fafafa;
+    padding-left: 10px;
+    color: #666;
   }
 
-  .el-form-item__label {
-    font-size: 16px !important;
+  #item2 {
+    font-size: 14px !important;
   }
-}
-#graphcontainerdiv {
-  .el-card__body {
-    padding: 0px;
+
+  #graphcontainerdiv {
+    background: #f9fbfd;
+    margin: 0px 10px 0px 10px;
+  }
+
+  #result-container {
+    .el-table th > .cell {
+      width: 125%;
+      color: #4c4b4be6;
+    }
+
+    .el-form-item__label {
+      font-size: 16px !important;
+    }
+  }
+
+  #graphcontainerdiv {
+    .el-card__body {
+      padding: 0px;
+      height: 100%;
+    }
+  }
+
+  .graphRightMenu {
+    color: #009cff;
+    position: absolute;
+    font-size: 17px;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .graphRightMenu:hover {
+    background-color: #2c3e509c;
+  }
+
+  /**主区域 */
+  .main {
+    position: absolute;
+    top: 50px;
+    left: 180px;
+    bottom: 0px;
+    right: 0px;
+    //   padding: 10px;
+    overflow: auto;
+    //   background-color: red;
+  }
+
+  .mainLeft {
+    position: absolute;
+    width: 300px;
+    margin: 10px 0px 0px 10px;
+    // border: 1px solid #35475e45;
+    border-top: transparent;
+    top: 1px;
+    // height: 98.7%;
+    box-shadow: transparent !important;
+  }
+
+  .mainRight {
+    //   background-color: red;
+    margin-left: 310px;
     height: 100%;
   }
-}
-.graphRightMenu {
-  color: #009cff;
-  position: absolute;
-  font-size: 17px;
-  text-align: center;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-}
 
-.graphRightMenu:hover {
-  background-color: #2c3e509c;
-}
+  #mainHeader2 {
+    margin: 10px 10px 0px 10px;
+    line-height: 45px;
+    background: #fafafa;
 
-/**主区域 */
-.main {
-  position: absolute;
-  top: 50px;
-  left: 180px;
-  bottom: 0px;
-  right: 0px;
-  //   padding: 10px;
-  overflow: auto;
-  //   background-color: red;
-}
+    .tupuShow {
+      width: 20%;
+      float: left;
+      text-align: left;
+      padding-left: 10px;
+    }
+  ;
 
-.mainLeft {
-  position: absolute;
-  width: 300px;
-  margin: 10px 0px 0px 10px;
-  // border: 1px solid #35475e45;
-  border-top: transparent;
-  top: 1px;
-  // height: 98.7%;
-  box-shadow: transparent !important;
-}
+    .btnShow {
+      text-align: right;
+      padding-right: 10px;
+    }
+  ;
 
-.mainRight {
-  //   background-color: red;
-  margin-left: 310px;
-  height: 100%;
-}
-#mainHeader2 {
-  margin: 10px 10px 0px 10px;
-  line-height: 45px;
-  background: #fafafa;
-  .tupuShow{
-    width: 20%;
-    float: left;
-    text-align: left;
-    padding-left: 10px;
-  };
-  .btnShow{
-    text-align: right;
-    padding-right: 10px;
-  };
-  .el-card__body {
-    padding: 0px !important;
+    .el-card__body {
+      padding: 0px !important;
+    }
+
+    .el-button {
+      line-height: 0.5;
+    }
   }
-  .el-button {
-    line-height: 0.5;
+
+  .fullScreen {
+    text-decoration: none;
+    color: black;
+  }
+
+  .el-dialog {
+    margin-top: 8vh !important;
+    overflow-y: auto;
+    height: 850px;
+  }
+
+  .el-icon-menu {
+    font-size: 15px;
+  }
+
+  .el-dropdown {
+    color: #fff;
+    font-size: 14px;
   }
 }
-.fullScreen {
-  text-decoration: none;
-  color: black;
-}
-
-.el-dialog {
-  margin-top: 8vh !important;
-  overflow-y: auto;
-  height: 850px;
-}
-.el-icon-menu {
-  font-size: 15px;
-}
-.el-dropdown {
-  color: #fff;
-  font-size: 14px;
-}}
 </style>

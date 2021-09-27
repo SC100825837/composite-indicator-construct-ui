@@ -1,35 +1,40 @@
 <template>
   <div>
-    <el-card class="exMain">
-      <div class="btnSingleLine">
-        <el-upload
-          class="upload-demo"
-          action="http://localhost:6060/file/upload"
-          accept=".xlsx,.xls"
-          :before-upload="beforeUpload"
-          :on-success="handleAvatarSuccess"
-          :on-exceed="handleExceed"
-          multiple
-          :limit="1"
-          :auto-upload="true"
-          :show-file-list="false"
-        >
-          <el-button size="small" type="warning">上传Excel</el-button>
-          <!--            <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过500kb</div>-->
-        </el-upload>
-        <el-button
-          size="small"
-          type="primary"
-          style="margin-left: 91%"
-          @click="$router.back()"
-          >返回</el-button
-        >
+    <el-card class="exMain" v-loading="loading" element-loading-text="请稍等...">
+      <div class="btnSingleLine" >
+        <div style="float:left" >
+          <el-upload
+            class="upload-demo"
+            action="http://localhost:6060/file/upload"
+            accept=".xlsx,.xls"
+            :before-upload="beforeUpload"
+            :on-success="handleAvatarSuccess"
+            :on-error="uploadError"
+            :on-exceed="handleExceed"
+            multiple
+            :limit="1"
+            :auto-upload="true"
+            :show-file-list="false"
+          >
+            <el-button size="small" type="warning">上传Excel</el-button>
+            <!--            <div slot="tip" class="el-upload__tip">只能上传excel文件，且不超过500kb</div>-->
+          </el-upload>
+        </div>
+        <div style="float:right">
+          <el-button
+            size="small"
+            type="primary"
+            @click="$router.back()"
+          >返回
+          </el-button
+          >
+        </div>
       </div>
       <div id="excel-manager">
         <div class="dataUpdata">
         </div>
         <el-table
-          :data="excelList"
+          :data="excelData"
           style="width: 100%; margin-top: 10px"
           border
           highlight-current-row
@@ -38,14 +43,15 @@
           </el-table-column>
           <el-table-column prop="uploadDate" sortable label="上传时间">
           </el-table-column>
-          <el-table-column prop="uploaderId" sortable label="上传者"> </el-table-column>
+          <el-table-column prop="uploaderId" sortable label="上传者"></el-table-column>
           <el-table-column fixed="right" label="操作" width="120">
             <template slot-scope="scope">
               <el-button
                 @click="handleClick(scope.row)"
                 type="text"
                 size="small"
-                >查看</el-button
+              >查看
+              </el-button
               >
               <el-button
                 @click.native.prevent="deleteRow(scope.$index, excelData)"
@@ -76,7 +82,7 @@
 </template>
 
 <script>
-import { HotTable, HotColumn } from "@handsontable/vue";
+import {HotTable, HotColumn} from "@handsontable/vue";
 import Handsontable from "handsontable";
 import $axios from "../../utils/utils";
 import "handsontable/dist/handsontable.full.css";
@@ -89,12 +95,12 @@ export default {
   },
   data() {
     return {
+      recentlyId: 0,
       //当前页数
-      currentPage4:1,
-      pageSize:10,
+      currentPage4: 1,
+      pageSize: 10,
       //总条目
-      total:0,
-      excelList: [],
+      total: 0,
       //表格数据
       excelData: [
         // { id: 1, name: 'Table tennis racket', price: 13, currency: 'PLN'},
@@ -103,6 +109,7 @@ export default {
         // { id: 3, name: 'Mountain bike', price: 2342, currency: 'USD' },
         // { id: 3, name: 'Mountain bike', price: 300, currency: 'USD' }
       ],
+      loading: false,
       //表格属性设置
       excelSettings: {
         height: 650,
@@ -141,30 +148,55 @@ export default {
     };
   },
   created() {
+    this.recentlyId = window.sessionStorage.getItem("recentlyId");
     //表格数据得初期显示
     this.getCiFrameworkList();
   },
   methods: {
+    getRecentlyCiFrameworkObjectId() {
+      $axios.getRecentlyCiFrameworkObjectId().then((result) => {
+        // console.log("result", result);
+        this.recentlyId = result.data.data;
+        window.sessionStorage.setItem("recentlyId", this.recentlyId);
+      });
+    },
     //表格数据显示
     getCiFrameworkList() {
       $axios.ciFrameworkList().then((res) => {
         // console.log("result", res.data);
-        this.excelList = res.data.data;
-        this.total=res.data.data.length;
+        this.excelData = res.data.data;
+        this.total = res.data.data.length;
         // console.log('this.total',this.total);
       });
     },
     beforeUpload(file) {
+      this.loading = true;
       console.log("beforeUpload", file);
     },
     handleAvatarSuccess(res, file) {
+      this.loading = false;
+      if (res.code === 1) {
+        this.$message.warning(res.msg)
+      } else {
+        if (this.recentlyId === null || this.recentlyId === "null") {
+          this.getCiFrameworkList();
+          this.getRecentlyCiFrameworkObjectId();
+        }
+      }
       console.log("handleAvatarSuccess", res, file);
     },
     handleExceed(files) {
+      this.loading = false;
       console.log("handleExceed", files);
       this.$message.warning(`文件 “${files[0].name}” 已上传`);
     },
-    getList() {},
+    uploadError(res) {
+      console.log("uploadError", res)
+      this.loading = false;
+      this.$message.error("上传失败");
+    },
+    getList() {
+    },
     swapHotData: function () {
       // The Handsontable instance is stored under the `hotInstance` property of the wrapper component.
       this.$refs.hotTableComponent.hotInstance.loadData([["new", "data"]]);
@@ -175,13 +207,23 @@ export default {
     },
     //点击查看页面跳转
     handleClick(rows) {
-      this.$router.push({ path: "/layout/excelData", query: { id: rows.id } });
+      this.$router.push({path: "/layout/excelData", query: {id: rows.id}});
     },
     //表格数据行删除
     deleteRow(index, rows) {
-      console.log("deleteRow", index, rows)
-      rows.splice(index, 1);
-      $axios.deleteCiFrameworkObject(window.sessionStorage.getItem("recentlyId")).then((res) => {
+      // console.log("deleteRow", index, rows)
+      this.loading = true;
+      let rowId = rows[index].id
+      // console.log("deleteRow", index, rows[index])
+      $axios.deleteCiFrameworkObject(rowId).then((res) => {
+        this.loading = false;
+        if (res.data.code === 0) {
+          rows.splice(index, 1);
+          this.$message.success("删除成功")
+        }
+        $axios.getRecentlyCiFrameworkObjectId().then(result => {
+          window.sessionStorage.setItem("recentlyId", result.data.data)
+        })
       });
     },
     // 每页 ${val} 条分页
@@ -207,6 +249,7 @@ export default {
   color: #808080;
   height: 42px;
 }
+
 .el-table td {
   height: 32px;
 }
@@ -214,15 +257,18 @@ export default {
 #excel-manager {
   width: 100%;
 }
+
 .exMain {
   width: 98%;
   margin: 10px;
 }
+
 .dataUpdata {
   position: absolute;
   top: 35px;
   border-radius: 5px;
 }
+
 .el-button--small {
   border-radius: 5px;
 }
@@ -230,9 +276,11 @@ export default {
 .handsontable thead th .relative {
   height: 30px;
 }
+
 .handsontable span.colHeader {
   line-height: 2.2 !important;
 }
+
 .block {
   text-align: right;
   margin-top: 10px;
