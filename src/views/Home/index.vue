@@ -99,7 +99,7 @@ export default {
       $axios.switchFrameObj(id).then(res => {
         console.log("switchFrameObj")
         $axios.getCiFrameworkObjectInfo(id).then((res) => {
-          if (res.data.code === 0) {
+          if (res.data.code === 200) {
             //接受返回值参数
             this.barLineData = res.data.data.allTargetsCic;
             //调取折线图echars图

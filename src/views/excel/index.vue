@@ -5,7 +5,7 @@
         <div style="float:left" >
           <el-upload
             class="upload-demo"
-            action="http://localhost:6060/file/upload"
+            action="http://localhost:6060/file/resolveExcel"
             accept=".xlsx,.xls"
             :before-upload="beforeUpload"
             :on-success="handleAvatarSuccess"
@@ -216,8 +216,9 @@ export default {
       let rowId = rows[index].id
       // console.log("deleteRow", index, rows[index])
       $axios.deleteCiFrameworkObject(rowId).then((res) => {
+        console.log("deleteCiFrameworkObject", res)
         this.loading = false;
-        if (res.data.code === 0) {
+        if (res.data.code === 200) {
           rows.splice(index, 1);
           this.$message.success("删除成功")
         }
